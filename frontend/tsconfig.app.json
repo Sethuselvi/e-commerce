@@ -1,0 +1,12 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": ["frontend/env.d.ts", "src/**/*", "src/**/*.vue", "frontend/main.ts", "frontend/App.vue", "frontend/App.vue", "frontend/src/pages/Checkout.vue", "frontend/src/pages/Home.vue", "frontend/src/pages/Login.vue", "frontend/src/pages/OrderDetails.vue", "frontend/src/pages/OrderHistory.vue", "frontend/src/pages/Profile.vue", "frontend/src/pages/Register.vue", "frontend/src/router", "frontend/src/services", "frontend/src/stores", "frontend/src/types"],
+  "exclude": ["src/**/__tests__/*"],
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
