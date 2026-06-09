@@ -192,5 +192,37 @@ router.post('/reset-password', async (req, res) => {
     res.status(500).json({ message: 'Error resetting password' });
   }
 });
+// Make admin endpoint
+router.post('/make-admin', async (req, res) => {
+  try {
+    // Accept email from request body, fallback to env variable
+    const { email } = req.body;
+    const adminEmail = email || process.env.ADMIN_EMAIL;
+    
+    if (!adminEmail) {
+      return res.status(400).json({ message: 'Email is required or ADMIN_EMAIL not configured' });
+    }
+
+    const user = await User.findOne({ email: adminEmail.toLowerCase() });
+    if (!user) {
+      return res.status(404).json({ message: `User with email ${adminEmail} not found` });
+    }
+
+    user.isAdmin = true;
+    await user.save();
+    
+    res.json({ 
+      message: `User ${user.name} (${user.email}) is now admin`,
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        isAdmin: user.isAdmin
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error', error: error.message });
+  }
+});
 
 module.exports = router; 
