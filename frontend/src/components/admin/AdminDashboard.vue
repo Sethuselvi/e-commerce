@@ -21,6 +21,8 @@
       </div>
     </div>
 
+    <MakeAdminForm />
+
     <div class="recent-activity">
       <h2>Recent Orders</h2>
       <div class="orders-list">
@@ -42,6 +44,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { api } from '@/services/api'
+import MakeAdminForm from './MakeAdminForm.vue'
 
 interface Stats {
   totalOrders: number
