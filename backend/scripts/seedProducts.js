@@ -1,7 +1,3 @@
-const mongoose = require('mongoose');
-const Product = require('../models/Product');
-require('dotenv').config();
-
 const products = [
   {
     name: 'Classic T-Shirt',
@@ -101,27 +97,4 @@ const products = [
   }
 ];
 
-async function seedProducts() {
-  try {
-    // Connect to MongoDB
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ecommerce');
-
-    // Clear existing products
-    await Product.deleteMany({});
-
-    // Insert new products
-    const insertedProducts = await Product.insertMany(products);
-
-    // Display seeded products
-    insertedProducts.forEach(product => {
-    });
-
-  } catch (error) {
-    console.error('Error seeding database:', error);
-  } finally {
-    await mongoose.disconnect();
-  }
-}
-
-// Run the seeding function
-seedProducts(); 
+module.exports = products; 

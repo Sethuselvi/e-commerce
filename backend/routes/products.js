@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product');
+const products = require('../scripts/seedProducts');
 
 // Get all products (for customers)
 router.get('/', async (req, res) => {
   try {
-    const products = await Product.find({ isActive: true }).sort({ createdAt: -1 });
     res.json(products);
   } catch (error) {
     res.status(500).json({ 
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 // Get all categories
 router.get('/categories', async (req, res) => {
   try {
-    const categories = await Product.distinct('category', { isActive: true });
+    const categories = [...new Set(products.map(p => p.category))];
     res.json(categories);
   } catch (error) {
     res.status(500).json({ 
@@ -32,11 +32,8 @@ router.get('/categories', async (req, res) => {
 router.get('/category/:category', async (req, res) => {
   try {
     const { category } = req.params;
-    const products = await Product.find({ 
-      category: category, 
-      isActive: true 
-    }).sort({ createdAt: -1 });
-    res.json(products);
+    const filteredProducts = products.filter(p => p.category === category);
+    res.json(filteredProducts);
   } catch (error) {
     res.status(500).json({ 
       message: 'Error fetching products by category',
@@ -49,14 +46,10 @@ router.get('/category/:category', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const product = await Product.findById(id);
+    const product = products[parseInt(id)];
     
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
-    }
-    
-    if (!product.isActive) {
-      return res.status(404).json({ message: 'Product not available' });
     }
     
     res.json(product);

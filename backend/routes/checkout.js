@@ -81,10 +81,10 @@ router.post('/verify-payment', auth, async (req, res) => {
           customerEmail: orderDetails.customerEmail,
           customerPhone: orderDetails.customerPhone || 'N/A',
           items: orderDetails.items,
-          subtotal: orderDetails.subtotal,
-          shippingCost: orderDetails.shippingCost,
-          tax: orderDetails.tax,
-          totalAmount: orderDetails.totalAmount,
+          subtotal: orderDetails.subtotal || 0,
+          shippingCost: orderDetails.shippingCost || 0,
+          tax: orderDetails.tax || 0,
+          totalAmount: orderDetails.totalAmount || 0,
           shippingAddress: orderDetails.shippingAddress,
           paymentMethod: 'razorpay',
           paymentStatus: 'completed',
@@ -103,14 +103,13 @@ router.post('/verify-payment', auth, async (req, res) => {
           message: 'Order placed successfully'
         });
       } catch (dbError) {
-        if (dbError.name === 'ValidationError') {
+        console.error('Order save error:', dbError);
         res.status(500).json({ 
           success: false, 
           message: 'Payment successful but order could not be saved',
           error: dbError.message,
           details: dbError.errors || dbError.stack
         });
-        }
       }
     } else {
       res.status(400).json({ success: false, message: 'Payment verification failed' });
