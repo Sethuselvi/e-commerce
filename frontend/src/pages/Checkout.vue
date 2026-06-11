@@ -229,7 +229,7 @@ const handlePayment = async () => {
 
          
           // Verify payment with backend and save order
-          const verifyResponse = await fetch('http://localhost:5001/api/checkout/verify-payment', {
+          const verifyResponse = await fetch(`${import.meta.env.VITE_API_URL}/checkout/verify-payment`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

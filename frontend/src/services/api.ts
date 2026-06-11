@@ -1,7 +1,18 @@
 import axios from 'axios'
 
+// Dynamic API base URL based on environment
+const getApiBaseUrl = () => {
+  // Development: use dev URL
+  if (import.meta.env.DEV) {
+    return import.meta.env.VITE_API_URL|| 'http://localhost:5001/api'
+  }
+  
+  // Production: use production URL
+  return import.meta.env.VITE_API_URL || '/api'
+}
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api',
+  baseURL: getApiBaseUrl(),
   headers: {
     'Content-Type': 'application/json'
   }

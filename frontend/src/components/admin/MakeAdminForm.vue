@@ -53,7 +53,7 @@ const handleMakeAdmin = async () => {
     errorMessage.value = ''
     successMessage.value = ''
 
-    const response = await fetch('http://localhost:5001/api/auth/make-admin', {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/make-admin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
